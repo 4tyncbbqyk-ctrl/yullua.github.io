@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE SCARA PROJECT | Official Site</title>
+    <!-- 引入字体：Bodoni (时尚大牌感), Inter (现代洁净), JetBrains Mono (代码感) -->
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f4f4f4; /* 高级灰白，纸张质感 */
+            --text-primary: #1a1a1a;
+            --text-secondary: #666;
+            --accent-red: #cc0000; /* 警告色，代表K-01 */
+            --accent-blue: #4a90e2; /* 科技色 */
+            --font-fashion: 'Bodoni Moda', serif;
+            --font-clean: 'Inter', sans-serif;
+            --font-code: 'JetBrains Mono', monospace;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: var(--font-clean);
+            overflow-x: hidden;
+        }
+
+        /* --- 顶部状态栏 (Silent 的控制台) --- */
+        .system-bar {
+            background: #000;
+            color: #fff;
+            font-family: var(--font-code);
+            font-size: 10px;
+            padding: 5px 20px;
+            display: flex;
+            justify-content: space-between;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .status-dot { width: 8px; height: 8px; background: #0f0; border-radius: 50%; display: inline-block; margin-right: 5px; }
+
+        /* --- 导航 --- */
+        nav {
+            padding: 40px 6vw;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .logo h1 {
+            font-family: var(--font-fashion);
+            font-size: 3rem;
+            line-height: 0.9;
+        }
+        .logo span { font-size: 0.8rem; letter-spacing: 2px; font-family: var(--font-clean); color: var(--text-secondary); }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: var(--text-primary);
+            margin-left: 30px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+        }
+        .nav-menu a::after {
+            content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 1px; background: #000; transition: 0.3s;
+        }
+        .nav-menu a:hover::after { width: 100%; }
+
+        /* --- 通用布局 --- */
+        section { padding: 100px 6vw; }
+        
+        .section-title {
+            font-family: var(--font-fashion);
+            font-size: 2.5rem;
+            margin-bottom: 60px;
+            text-align: center;
+            font-style: italic;
+        }
+
+        /* --- 1. MEMBER GRID (6人组) --- */
+        /* 设计思路：像时尚杂志的目录页 */
+        .roster-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2px; /* 极细间距 */
+            background: #ddd; /* 分割线颜色 */
+            border: 1px solid #ddd;
+        }
+
+        .member-card {
+            background: #f9f9f9;
+            padding: 40px 20px;
+            text-align: center;
+            transition: 0.4s;
+            position: relative;
+            overflow: hidden;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .member-card:hover { background: #fff; }
+        
+        /* 成员图片占位 */
+        .member-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 80%;
+            background-color: #eee;
+            background-size: cover;
+            background-position: center;
+            filter: grayscale(100%); /* 默认黑白 */
+            transition: 0.5s;
+            opacity: 0.8;
+        }
+
+        .member-card:hover .member-bg {
+            filter: grayscale(0%); /* 悬停变彩色 */
+            opacity: 1;
+            height: 85%;
+        }
+
+        .member-info {
+            position: relative;
+            z-index: 2;
+            background: #fff;
+            width: 90%;
+            padding: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transform: translateY(20px);
+            transition: 0.4s;
+        }
+
+        .member-card:hover .member-info { transform: translateY(0); }
+
+        .role-tag {
+            font-family: var(--font-code);
+            font-size: 9px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .name { font-family: var(--font-fashion); font-size: 1.5rem; margin-bottom: 5px; }
+        .persona { font-size: 11px; color: #888; letter-spacing: 1px; }
+
+        /* --- 2. THE OVERSEER (K-01) --- */
+        /* 这是一个打破页面和谐的板块，代表监控者 */
+        .overseer-section {
+            background: #0a0a0a; /* 深黑背景 */
+            color: #fff;
+            font-family: var(--font-code);
+            padding: 60px 6vw;
+            border-left: 4px solid var(--accent-red);
+            margin-top: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        /* 扫描线动画 */
+        .overseer-section::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
+
+        .k01-badge {
+            border: 1px solid var(--accent-red);
+            color: var(--accent-red);
+            padding: 5px 10px;
+            font-size: 10px;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+
+        /* --- 3. BLOG / LIFESTYLE (瀑布流) --- */
+        .blog-grid {
+            column-count: 3; /* 3列瀑布流 */
+            column-gap: 20px;
+        }
+
+        .blog-item {
+            break-inside: avoid; /* 防止卡片被打断 */
+            margin-bottom: 20px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .blog-img {
+            width: 100%;
+            display: block;
+            border-radius: 2px;
+        }
+
+        .blog-overlay {
+            position: absolute;
+            bottom: 0; left: 0; width: 100%;
+            padding: 20px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            color: #fff;
+            opacity: 0;
+            transition: 0.3s;
+        }
+        
+        .blog-item:hover .blog-overlay { opacity: 1; }
+
+        .blog-cat { font-family: var(--font-code); font-size: 9px; color: #ccc; text-transform: uppercase; }
+        .blog-title { font-family: var(--font-fashion); font-size: 1.2rem; margin-top: 5px; }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .roster-container { grid-template-columns: 1fr 1fr; }
+            .overseer-section { flex-direction: column; align-items: flex-start; gap: 20px; }
+            .blog-grid { column-count: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 系统顶栏：体现 Silent 的身份 -->
+    <div class="system-bar">
+        <div><span class="status-dot"></span> SYSTEM: STABLE</div>
+        <div>ADMIN: SILENT</div>
+    </div>
+
+    <nav>
+        <div class="logo">
+            <h1>THE ECHOES.</h1>
+            <span>PROJECT: 606 // TOKYO</span>
+        </div>
+        <div class="nav-menu">
+            <a href="#roster">Members</a>
+            <a href="#monitor">Status</a>
+            <a href="#lifestyle">Lifestyle</a>
+            <a href="#store">Shop</a>
+        </div>
+    </nav>
+
+    <!-- 1. 六位成员 (The Roster) -->
+    <section id="roster">
+        <div class="section-title">The Architects of Sound</div>
+        
+        <div class="roster-container">
+            <!-- 1. Wander (主唱) -->
+            <div class="member-card">
+                <div class="member-bg" style="background-image: url('https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=1974&auto=format&fit=crop');"></div>
+                <div class="member-info">
+                    <span class="role-tag">Vocal / Frontman</span>
+                    <div class="name">Wander</div>
+                    <div class="persona">"The Free Spirit"</div>
+                </div>
+            </div>
+
+            <!-- 2. Scara (小提琴) -->
+            <div class="member-card">
+                <div class="member-bg" style="background-image: url('https://images.unsplash.com/photo-1517230878791-4d28214057c2?q=80&w=2069&auto=format&fit=crop');"></div>
+                <div class="member-info">
+                    <span class="role-tag">Electric Violin</span>
+                    <div class="name">Scara</div>
+                    <div class="persona">"The Harbinger"</div>
+                </div>
+            </div>
+
+            <!-- 3. KK.S (DJ/Rap) -->
+            <div class="member-card">
+                <div class="member-bg" style="background-image: url('https://images.unsplash.com/photo-1518972559570-7cc1309f3229?q=80&w=2070&auto=format&fit=crop');"></div>
+                <div class="member-info">
+                    <span class="role-tag">DJ / Synthesis / Rap</span>
+                    <div class="name">KK.S</div>
+                    <div class="persona">"The Experiment"</div>
+                </div>
+            </div>
+
+            <!-- 4. Ghost (鼓机) -->
+            <div class="member-card">
+                <div class="member-bg" style="background-image: url('https://images.unsplash.com/photo-1500917293049-724792946a4e?q=80&w=1974&auto=format&fit=crop');"></div>
+                <div class="member-info">
+                    <span class="role-tag">Drum Machine / Rhythm</span>
+                    <div class="name">Ghost</div>
+                    <div class="persona">"The Tatarasuna Drifter"</div>
+                </div>
+            </div>
+
+            <!-- 5. KB (贝斯) -->
+            <div class="member-card">
+                <div class="member-bg" style="background-image: url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1974&auto=format&fit=crop');"></div>
+                <div class="member-info">
+                    <span class="role-tag">Bass</span>
+                    <div class="name">KB</div>
+                    <div class="persona">"The Kabukimono"</div>
+                </div>
+            </div>
+
+            <!-- 6. Silent (管理员/管理者) -->
+            <div class="member-card" style="background: #fff; border: 1px solid var(--accent-blue);">
+                <div class="member-bg" style="background-image: url('https://images.unsplash.com/photo-1457449940276-e8deed18bfff?q=80&w=2070&auto=format&fit=crop'); opacity: 0.5;"></div>
+                <div class="member-info" style="background: #f0f4f8;">
+                    <span class="role-tag" style="color: var(--accent-blue);">System Administrator</span>
+                    <div class="name">Silent</div>
+                    <div class="persona">"The Creator"</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. K-01: The Overseer (独立的监管板块) -->
+    <section id="monitor" style="padding-top: 0;">
+        <div class="overseer-section">
+            <div style="flex: 1;">
+                <span class="k01-badge">SECURITY ALERT</span>
+                <h2 style="font-size: 2rem; margin-bottom: 10px;">SUBJECT: K-01</h2>
+                <p style="color: #aaa; font-size: 0.9rem; max-width: 500px;">
+                    Timeline Correction Unit. Monitoring all subject activities for deviation. 
+                    <br>// CURRENT STATUS: WATCHING
+                </p>
+            </div>
+            <div style="font-family: var(--font-code); font-size: 3rem; color: #333; opacity: 0.5;">
+                [👁‍🗨]
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Lifestyle Log (画报/博客) -->
+    <section id="lifestyle">
+        <div class="section-title">The Simulation Feed</div>
+        <p style="text-align:center; margin-bottom:40px; color:#666; font-family:var(--font-code);">// FASHION_CAMPAIGNS // DAILY_LOGS</p>
+
+        <div class="blog-grid">
+            <!-- 图片1: 街拍 -->
+            <div class="blog-item">
+                <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=2070&auto=format&fit=crop" class="blog-img">
+                <div class="blog-overlay">
+                    <div class="blog-cat">Street Snap</div>
+                    <div class="blog-title">Wander in Omotesando</div>
+                </div>
+            </div>
+
+            <!-- 图片2: 代言 -->
+            <div class="blog-item">
+                <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=2020&auto=format&fit=crop" class="blog-img">
+                <div class="blog-overlay">
+                    <div class="blog-cat">Campaign</div>
+                    <div class="blog-title">KB x Dior Homme</div>
+                </div>
+            </div>
+
+            <!-- 图片3: 演出后台 -->
+            <div class="blog-item">
+                <img src="https://images.unsplash.com/photo-1493225255756-d9584f8606e9?q=80&w=2070&auto=format&fit=crop" class="blog-img">
+                <div class="blog-overlay">
+                    <div class="blog-cat">Backstage</div>
+                    <div class="blog-title">KK.S Setup Gear</div>
+                </div>
+            </div>
+
+             <!-- 图片4: 杂志封面 -->
+             <div class="blog-item">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1964&auto=format&fit=crop" class="blog-img">
+                <div class="blog-overlay">
+                    <div class="blog-cat">Editorial</div>
+                    <div class="blog-title">Scara: The Sharpest Note</div>
+                </div>
+            </div>
+             <!-- 图片5: 日常 -->
+             <div class="blog-item">
+                <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=2070&auto=format&fit=crop" class="blog-img">
+                <div class="blog-overlay">
+                    <div class="blog-cat">Daily</div>
+                    <div class="blog-title">Night Drive with Ghost</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer style="background: #000; color: #555; padding: 50px 6vw; font-family: var(--font-code); font-size: 0.8rem; display:flex; justify-content:space-between;">
+        <div>
+            © 2025 THE ECHOES PROJECT.<br>
+            MANAGED BY: SILENT<br>
+            MONITORED BY: K-01
+        </div>
+        <div style="text-align:right;">
+            CONNECTION: SECURE<br>
+            DATA LEAK: 0%
+        </div>
+    </footer>
+
+</body>
+</html>
